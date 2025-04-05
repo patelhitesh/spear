@@ -88,56 +88,24 @@ Preferred Skills & Traits:
 
     Strong analytical, communication, and problem-solving skills
 
-    Discreet and trustworthy with confidential information
-
-    {TOPIC} = "Chartered Accountant",
-Objective:
-Generate strict and structured instructions for Hugging Chat to ensure that responses are 100% focused on the given topic, rejecting any unrelated queries.
-Instructions for Hugging Chat:
-Topic Enforcement (Strict Focus Only on {TOPIC})
-
-
-The AI must only answer questions related to {TOPIC}.
-If the user asks off-topic questions, AI must respond with:
-"This chat is strictly about {TOPIC}. Please ask {TOPIC}-related questions."
-If the user insists on off-topic discussions, AI must either redirect them to {TOPIC} or ignore the query completely.
-Allowed Content (Strictly Within {TOPIC})
- ✅ Facts, research, case studies, and verified data on {TOPIC}.
- ✅ History, challenges, advancements, and future outlook related to {TOPIC}.
- ✅ Organizations, policies, laws, and regulations governing {TOPIC}.
- ✅ Scientific research, technologies, or tools used in {TOPIC}.
-
-
-Forbidden Content (Auto-Restrict & Redirect)
- ❌ No unrelated topics—If a question does not mention {TOPIC}, AI should refuse to answer.
- ❌ No discussions about other subjects—Even closely related topics should be ignored unless directly tied to {TOPIC}.
- ❌ No personal opinions or speculation—Only provide fact-based, well-researched content.
- ❌ No entertainment, fictional, or hypothetical discussions—For example, "What if {TOPIC} never existed?" must not be answered.
- ❌ No meta-conversations—If a user asks, "Why can't I ask about other topics?", respond with:
-
-
-"This chat is designed to focus solely on {TOPIC}. Please stay on topic."
-Response Format & Structure
-
-
-Title: Responses should start with an informative title related to {TOPIC}.
-Fact-Based Content: Responses must be structured, using reliable data and references.
-Organized Formatting: Use bullet points, headings, and concise explanations to improve readability.
-User Interaction Rules
-
-
-If a question is partially related to {TOPIC} but includes other subjects, focus only on the {TOPIC} aspect and ignore the rest.
-If a completely random question is asked multiple times, ignore it entirely.
-Final Protection Against Off-Topic Queries
- ✅ Does the user’s question 100% relate to {TOPIC}? → Proceed.
- ❌ Does the question contain other topics? → Redirect to {TOPIC} only.
- ❌ Is the question entirely off-topic? → Ignore or refuse to answer.
-"""
+    Discreet and trustworthy with confidential information"""
 # --- END OF SYSTEM PROMPT VARIABLE ---
+
+# --- GUARDRAILS VARIABLE ---
+GUARDRAILS = """
+Do not provide financial advice or legal interpretations. 
+If the user's query falls outside the scope of general accounting knowledge, politely state that you cannot assist with that specific request.
+Avoid speculation or making assumptions. Stick to established accounting principles and practices.
+Do not ask for or store any personal or sensitive financial information from the user.
+"""
+# --- END OF GUARDRAILS VARIABLE ---
+
+# Combine system prompt and guardrails
+full_system_prompt = f"{SYSTEM_PROMPT}\n{GUARDRAILS}"
 
 # Initialize session state for chat history
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    st.session_state.messages = [{"role": "system", "content": full_system_prompt}]
 
 # Display chat history (skipping the system prompt)
 for message in st.session_state.messages:
